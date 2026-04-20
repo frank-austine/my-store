@@ -17,72 +17,29 @@ export default function ProductCard({ product, videoUrl }: Props) {
   const addToCart = useCartStore((state) => state.addToCart);
   const cardRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'image' | 'video'>('image');
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
-    if (cardRef.current) {
-      animateOnScroll(cardRef.current);
-    }
+    if (cardRef.current) animateOnScroll(cardRef.current);
   }, []);
 
   const hasVideo = !!videoUrl;
 
+  function handleAddToCart(e: React.MouseEvent) {
+    e.stopPropagation();
+    addToCart(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  }
+
   return (
     <div
       ref={cardRef}
-      className="rounded-2xl overflow-hidden flex flex-col bg-[#1a1a1a] text-white"
+      className="rounded-xl overflow-hidden flex flex-col bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#8B7B2A]/50 transition-colors duration-300"
     >
-      {/* Product name and category — clicking goes to detail page */}
+      {/* Media area — clicking goes to detail */}
       <div
-        className="px-4 pt-5 pb-3 cursor-pointer"
-        onClick={() => router.push(`/products/${product.slug}`)}
-      >
-        <h3 className="text-xl font-bold leading-tight hover:text-gray-300 transition">
-          {product.name}
-        </h3>
-        {product.category && (
-          <p className="text-sm text-gray-400 font-medium mt-1">{product.category}</p>
-        )}
-
-        {/* Prices */}
-        <div className="mt-3 space-y-1">
-          <p className="text-sm font-semibold">
-            ${product.price_ship.toFixed(2)} — 🚢 Ship
-          </p>
-          <p className="text-sm font-semibold">
-            ${product.price_local.toFixed(2)} — 📍 In Town
-          </p>
-        </div>
-      </div>
-
-      {/* Image / Video toggle tabs */}
-      {hasVideo && (
-        <div className="flex mx-4 mb-3 rounded-xl overflow-hidden border border-gray-700">
-          <button
-            onClick={() => setActiveTab('image')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium transition ${
-              activeTab === 'image'
-                ? 'bg-gray-800 text-white'
-                : 'bg-transparent text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            🖼 Image
-          </button>
-          <button
-            onClick={() => setActiveTab('video')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium transition ${
-              activeTab === 'video'
-                ? 'bg-gray-800 text-white'
-                : 'bg-transparent text-gray-500 hover:text-gray-300'
-            }`}
-          >
-            ▷ Video
-          </button>
-        </div>
-      )}
-
-      {/* Media — clicking image goes to detail page */}
-      <div
-        className="relative w-full aspect-square bg-gray-900 cursor-pointer"
+        className="relative w-full aspect-square bg-[#111] cursor-pointer group"
         onClick={() => router.push(`/products/${product.slug}`)}
       >
         {activeTab === 'image' || !hasVideo ? (
@@ -91,11 +48,11 @@ export default function ProductCard({ product, videoUrl }: Props) {
               src={product.image_url}
               alt={product.name}
               fill
-              className="object-cover hover:opacity-90 transition"
-              sizes="(max-width: 768px) 100vw, 25vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-600 text-5xl">
+            <div className="w-full h-full flex items-center justify-center text-gray-700 text-4xl">
               📦
             </div>
           )
@@ -107,20 +64,70 @@ export default function ProductCard({ product, videoUrl }: Props) {
             className="w-full h-full object-cover"
           />
         )}
+
+        {/* Category badge */}
+        {product.category && (
+          <span className="absolute top-2 left-2 bg-black/70 text-[#8B7B2A] text-[10px] font-bold tracking-widest uppercase px-2 py-1 rounded-md border border-[#8B7B2A]/30">
+            {product.category}
+          </span>
+        )}
       </div>
 
-      {/* Add to cart */}
-      <div className="px-4 py-4">
-        {product.description && (
-          <p className="text-sm text-gray-400 mb-3 line-clamp-2">
-            {product.description}
+      {/* Image/Video tab toggle */}
+      {hasVideo && (
+        <div className="flex border-b border-[#2a2a2a]">
+          <button
+            onClick={() => setActiveTab('image')}
+            className={`flex-1 py-2 text-[11px] font-bold tracking-widest uppercase transition ${
+              activeTab === 'image'
+                ? 'text-[#8B7B2A] border-b-2 border-[#8B7B2A]'
+                : 'text-gray-600 hover:text-gray-400'
+            }`}
+          >
+            Image
+          </button>
+          <button
+            onClick={() => setActiveTab('video')}
+            className={`flex-1 py-2 text-[11px] font-bold tracking-widest uppercase transition ${
+              activeTab === 'video'
+                ? 'text-[#8B7B2A] border-b-2 border-[#8B7B2A]'
+                : 'text-gray-600 hover:text-gray-400'
+            }`}
+          >
+            Video
+          </button>
+        </div>
+      )}
+
+      {/* Info */}
+      <div
+        className="p-3 flex flex-col flex-1 cursor-pointer"
+        onClick={() => router.push(`/products/${product.slug}`)}
+      >
+        <h3 className="text-white font-bold text-sm leading-snug line-clamp-2 mb-2">
+          {product.name}
+        </h3>
+        <div className="space-y-0.5 mb-3 mt-auto">
+          <p className="text-[11px] text-gray-500">
+            🚢 <span className="text-[#8B7B2A] font-semibold">${product.price_ship.toFixed(2)}</span> Ship
           </p>
-        )}
+          <p className="text-[11px] text-gray-500">
+            📍 <span className="text-[#8B7B2A] font-semibold">${product.price_local.toFixed(2)}</span> Local
+          </p>
+        </div>
+      </div>
+
+      {/* Add to cart button */}
+      <div className="px-3 pb-3">
         <button
-          onClick={() => addToCart(product)}
-          className="w-full bg-[#8B7B2A] hover:bg-[#9d8c30] text-white py-3 rounded-xl text-sm font-bold active:scale-95 transition-all duration-150 uppercase tracking-wide"
+          onClick={handleAddToCart}
+          className={`w-full py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-widest transition-all duration-150 active:scale-95 border ${
+            added
+              ? 'bg-[#8B7B2A]/20 border-[#8B7B2A] text-[#8B7B2A]'
+              : 'bg-transparent border-[#8B7B2A]/40 text-[#8B7B2A] hover:bg-[#8B7B2A] hover:text-white hover:border-[#8B7B2A]'
+          }`}
         >
-          Add to Cart
+          {added ? '✓ Added' : 'Add to Cart'}
         </button>
       </div>
     </div>

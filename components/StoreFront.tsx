@@ -21,43 +21,57 @@ export default function StoreFront({ products, videos }: Props) {
   const [query, setQuery] = useState('');
 
   const byCategory = categoryParam
-    ? products.filter(
-        (p) => p.category?.toLowerCase() === categoryParam.toLowerCase()
-      )
+    ? products.filter((p) => p.category?.toLowerCase() === categoryParam.toLowerCase())
     : products;
 
   const filtered = searchProducts(byCategory, query);
 
   return (
-    <>
-      {/* Hero — only show on all products view */}
+    <div className="bg-[#111111] min-h-screen">
+      {/* Hero — only on main view */}
       {!categoryParam && <HeroBanner />}
 
-      {/* Search + Products */}
-      <section id="products" className="px-6 py-12 max-w-7xl mx-auto">
-        {categoryParam && (
-          <div className="mb-8">
-            <h1 className="text-3xl font-black uppercase tracking-tight">{categoryParam}</h1>
-            <a href="/" className="text-sm text-gray-400 hover:text-black transition mt-1 inline-block">
-              ← All products
-            </a>
+      {/* Products section */}
+      <section id="products" className="px-4 sm:px-6 py-12 max-w-screen-xl mx-auto">
+
+        {/* Section header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            {categoryParam ? (
+              <>
+                <p className="text-[10px] text-[#8B7B2A] uppercase tracking-[0.3em] mb-1">Category</p>
+                <h2 className="text-2xl font-black uppercase tracking-tight text-white">{categoryParam}</h2>
+                <a href="/" className="text-xs text-gray-600 hover:text-[#8B7B2A] transition mt-1 inline-block uppercase tracking-wide">
+                  ← All products
+                </a>
+              </>
+            ) : (
+              <>
+                <p className="text-[10px] text-[#8B7B2A] uppercase tracking-[0.3em] mb-1">Browse</p>
+                <h2 className="text-2xl font-black uppercase tracking-tight text-white">All Products</h2>
+              </>
+            )}
           </div>
-        )}
-        <div className="mb-8 max-w-md mx-auto">
-          <SearchBar value={query} onChange={setQuery} />
+          <div className="w-full sm:w-72">
+            <SearchBar value={query} onChange={setQuery} />
+          </div>
         </div>
+
         <ProductGrid products={filtered} />
       </section>
 
       {/* Videos */}
-      <div className="border-t border-gray-100">
-        <VideoSection videos={videos} />
-      </div>
+      <VideoSection videos={videos} />
 
       {/* About */}
-      <div className="border-t border-gray-100">
-        <AboutSection />
-      </div>
-    </>
+      <AboutSection />
+
+      {/* Footer */}
+      <footer className="border-t border-[#2a2a2a] py-8 px-6 text-center">
+        <p className="text-gray-700 text-xs uppercase tracking-widest">
+          © {new Date().getFullYear()} Kandy Carnival · Los Angeles
+        </p>
+      </footer>
+    </div>
   );
 }

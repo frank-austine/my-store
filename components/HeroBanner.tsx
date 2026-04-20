@@ -1,51 +1,76 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 
 export default function HeroBanner() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subRef = useRef<HTMLParagraphElement>(null);
-  const btnRef = useRef<HTMLAnchorElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+  const btnRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.fromTo(headingRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 })
-      .fromTo(subRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, '-=0.3')
+    tl.fromTo(badgeRef.current, { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 })
+      .fromTo(logoRef.current, { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8 }, '-=0.2')
+      .fromTo(taglineRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, '-=0.3')
       .fromTo(btnRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, '-=0.2');
   }, []);
 
   return (
-    <section className="relative w-full bg-black text-white overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10"
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0d0d0d]">
+
+      {/* Background radial glow */}
+      <div className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle at 20% 50%, #22c55e 0%, transparent 50%),
-                            radial-gradient(circle at 80% 20%, #16a34a 0%, transparent 40%)`,
+          background: `radial-gradient(ellipse 80% 60% at 50% 50%, #2a2000 0%, transparent 70%)`,
         }}
       />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
-        <span className="inline-block bg-green-500/20 text-green-400 text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6 border border-green-500/30">
-          Los Angeles · Fast Delivery
+      {/* Gold corner accents */}
+      <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-[#8B7B2A]/40 rounded-tl-3xl" />
+      <div className="absolute top-0 right-0 w-32 h-32 border-t-2 border-r-2 border-[#8B7B2A]/40 rounded-tr-3xl" />
+      <div className="absolute bottom-0 left-0 w-32 h-32 border-b-2 border-l-2 border-[#8B7B2A]/40 rounded-bl-3xl" />
+      <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-[#8B7B2A]/40 rounded-br-3xl" />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6">
+
+        {/* Badge */}
+        <span
+          ref={badgeRef}
+          className="inline-block border border-[#8B7B2A]/60 text-[#8B7B2A] text-xs font-semibold tracking-[0.25em] uppercase px-5 py-2 rounded-full mb-10"
+        >
+          Los Angeles · Premium Cannabis
         </span>
 
-        <h1 ref={headingRef} className="text-5xl sm:text-6xl font-black uppercase tracking-tight leading-none mb-6">
-          Premium<br />
-          <span className="text-green-400">Cannabis</span><br />
-          Products
-        </h1>
+        {/* Logo */}
+        <div ref={logoRef} className="relative w-[320px] h-[240px] sm:w-[440px] sm:h-[330px] mb-8 drop-shadow-2xl">
+          <Image
+            src="/logo.jpg"
+            alt="Kandy Carnival"
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
 
-        <p ref={subRef} className="text-gray-400 text-lg max-w-md mx-auto mb-10">
-          Top-shelf flowers, edibles, vapes, concentrates and pre-rolls.
-          Ship or local pickup — your choice.
+        {/* Tagline */}
+        <p
+          ref={taglineRef}
+          className="text-gray-400 text-base sm:text-lg max-w-sm mx-auto mb-10 leading-relaxed"
+        >
+          Top-shelf flowers, edibles, vapes &amp; more.
+          <br />
+          <span className="text-[#8B7B2A]">Ship or local pickup.</span>
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        {/* CTA buttons */}
+        <div ref={btnRef} className="flex flex-col sm:flex-row gap-4 items-center">
           <a
-            ref={btnRef}
             href="#products"
-            className="bg-green-500 hover:bg-green-400 text-black font-bold px-8 py-4 rounded-2xl transition-all duration-200 active:scale-95 text-sm uppercase tracking-wide"
+            className="bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-bold px-10 py-4 rounded-2xl transition-all duration-200 active:scale-95 text-sm uppercase tracking-[0.2em]"
           >
             Shop Now
           </a>
@@ -53,15 +78,18 @@ export default function HeroBanner() {
             href="https://t.me/Los_angeles_weed_kandy_plug"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-gray-700 hover:border-gray-500 text-white font-medium px-8 py-4 rounded-2xl transition-all duration-200 text-sm"
+            className="border border-[#8B7B2A]/50 hover:border-[#8B7B2A] text-gray-300 hover:text-white font-medium px-10 py-4 rounded-2xl transition-all duration-200 text-sm"
           >
-            Message on Telegram
+            Order via Telegram
           </a>
         </div>
       </div>
 
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600">
+        <span className="text-xs tracking-widest uppercase">Scroll</span>
+        <div className="w-px h-8 bg-gradient-to-b from-[#8B7B2A] to-transparent" />
+      </div>
     </section>
   );
 }

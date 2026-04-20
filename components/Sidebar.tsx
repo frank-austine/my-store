@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useCartStore } from '@/store/cartStore';
 
 const menuLinks = [
   { label: 'All Products', href: '/#products' },
@@ -14,14 +13,7 @@ const menuLinks = [
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleCart = useCartStore((state) => state.toggleCart);
 
-  // Close sidebar on route change
-  useEffect(() => {
-    setIsOpen(false);
-  }, []);
-
-  // Prevent body scroll when sidebar open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -29,48 +21,48 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Hamburger button — always visible top left */}
+      {/* Hamburger button */}
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
-        className="fixed top-4 left-4 z-50 flex flex-col justify-center items-center gap-1.5 w-10 h-10 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition"
+        className="fixed top-4 left-4 z-50 flex flex-col justify-center items-center gap-1.5 w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#8B7B2A]/50 transition"
       >
-        <span className="block w-5 h-0.5 bg-gray-800 rounded" />
-        <span className="block w-5 h-0.5 bg-gray-800 rounded" />
-        <span className="block w-3.5 h-0.5 bg-gray-800 rounded self-start ml-1.25" />
+        <span className="block w-5 h-0.5 bg-[#8B7B2A] rounded" />
+        <span className="block w-5 h-0.5 bg-[#8B7B2A] rounded" />
+        <span className="block w-3.5 h-0.5 bg-[#8B7B2A] rounded self-start ml-[5px]" />
       </button>
 
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar panel */}
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-72 bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-50 h-full w-72 bg-[#111111] border-r border-[#2a2a2a] flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Sidebar header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[#2a2a2a]">
           <div className="flex flex-col leading-none">
-            <span className="text-lg font-black tracking-tight uppercase">LA Kandy</span>
-            <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase">Weed Plug</span>
+            <span className="text-base font-black tracking-tight uppercase text-white">Kandy Carnival</span>
+            <span className="text-[9px] tracking-[0.3em] text-[#8B7B2A] uppercase mt-0.5">Los Angeles</span>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-gray-400 hover:text-black transition text-xl leading-none"
+            className="text-gray-600 hover:text-white transition text-lg leading-none"
           >
             ✕
           </button>
         </div>
 
-        {/* Nav links */}
+        {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
-          <p className="text-xs text-gray-400 uppercase tracking-widest px-3 mb-3">
+          <p className="text-[10px] text-[#8B7B2A] uppercase tracking-[0.3em] px-3 mb-4">
             Shop
           </p>
           {menuLinks.map((link) => (
@@ -78,40 +70,40 @@ export default function Sidebar() {
               key={link.href}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-black font-medium transition"
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-400 hover:bg-[#1a1a1a] hover:text-white font-medium transition border border-transparent hover:border-[#2a2a2a]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-300 shrink-0" />
+              <span className="w-1 h-1 rounded-full bg-[#8B7B2A] shrink-0" />
               {link.label}
             </a>
           ))}
 
           <div className="pt-6">
-            <p className="text-xs text-gray-400 uppercase tracking-widest px-3 mb-3">
+            <p className="text-[10px] text-[#8B7B2A] uppercase tracking-[0.3em] px-3 mb-4">
               Info
             </p>
             <a
               href="/about"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-black font-medium transition"
+              className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-400 hover:bg-[#1a1a1a] hover:text-white font-medium transition border border-transparent hover:border-[#2a2a2a]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-300 shrink-0" />
+              <span className="w-1 h-1 rounded-full bg-[#8B7B2A] shrink-0" />
               About Us
             </a>
           </div>
         </nav>
 
-        {/* Sidebar footer — Telegram CTA */}
-        <div className="px-6 py-5 border-t border-gray-100">
+        {/* Footer */}
+        <div className="px-5 py-5 border-t border-[#2a2a2a]">
           <button
             onClick={() => {
               setIsOpen(false);
               window.open('https://t.me/Los_angeles_weed_kandy_plug', '_blank');
             }}
-            className="w-full bg-black text-white py-3 rounded-xl font-medium hover:bg-gray-800 transition text-sm"
+            className="w-full bg-[#8B7B2A] hover:bg-[#a08f30] text-white py-3 rounded-xl font-bold transition text-sm uppercase tracking-widest"
           >
             Order via Telegram
           </button>
-          <p className="text-xs text-gray-400 text-center mt-3">
+          <p className="text-[10px] text-gray-600 text-center mt-3 tracking-wide">
             @Los_angeles_weed_kandy_plug
           </p>
         </div>

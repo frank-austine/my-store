@@ -10,14 +10,14 @@ type Props = {
 export default function ProductGrid({ products }: Props) {
   if (products.length === 0) {
     return (
-      <p className="text-center text-gray-400 py-12">
+      <p className="text-center text-gray-600 py-16 text-sm tracking-widest uppercase">
         No products found.
       </p>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
       {products.map((product) => (
         <ProductCard
           key={product.id}
