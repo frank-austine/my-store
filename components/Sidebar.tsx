@@ -2,15 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-const menuLinks = [
-  { label: 'All Products', href: '/#products' },
-  { label: 'Edibles', href: '/?category=Edibles#products' },
-  { label: 'Flowers', href: '/?category=Flowers#products' },
-  { label: 'Concentrates', href: '/?category=Concentrates#products' },
-  { label: 'Vapes', href: '/?category=Vapes#products' },
-  { label: 'Pre-Rolls', href: '/?category=Pre-Rolls#products' },
-];
-
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -60,36 +51,24 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
-          <p className="text-[10px] text-[#8B7B2A] uppercase tracking-[0.3em] px-3 mb-4">
-            Shop
-          </p>
-          {menuLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-400 hover:bg-[#1a1a1a] hover:text-white font-medium transition border border-transparent hover:border-[#2a2a2a]"
-            >
-              <span className="w-1 h-1 rounded-full bg-[#8B7B2A] shrink-0" />
-              {link.label}
-            </a>
-          ))}
-
-          <div className="pt-6">
-            <p className="text-[10px] text-[#8B7B2A] uppercase tracking-[0.3em] px-3 mb-4">
-              Info
-            </p>
-            <a
-              href="/about"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-400 hover:bg-[#1a1a1a] hover:text-white font-medium transition border border-transparent hover:border-[#2a2a2a]"
-            >
-              <span className="w-1 h-1 rounded-full bg-[#8B7B2A] shrink-0" />
-              About Us
-            </a>
-          </div>
+        {/* Nav — only All Products and About Us */}
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
+          <a
+            href="/#products"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7B2A] shrink-0" />
+            All Products
+          </a>
+          <a
+            href="/about"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7B2A] shrink-0" />
+            About Us
+          </a>
         </nav>
 
         {/* Footer */}
@@ -99,7 +78,7 @@ export default function Sidebar() {
               setIsOpen(false);
               window.open('https://t.me/Los_angeles_weed_kandy_plug', '_blank');
             }}
-            className="w-full bg-[#8B7B2A] hover:bg-[#a08f30] text-white py-3 rounded-xl font-bold transition text-sm uppercase tracking-widest"
+            className="w-full bg-[#8B7B2A] hover:bg-[#a08f30] text-white py-3 rounded-xl font-black transition text-sm uppercase tracking-widest"
           >
             Order via Telegram
           </button>
