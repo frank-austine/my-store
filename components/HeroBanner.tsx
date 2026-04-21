@@ -2,13 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 
 export default function HeroBanner() {
   const cardRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLAnchorElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -19,10 +17,10 @@ export default function HeroBanner() {
   return (
     <section className="min-h-screen bg-[#111111] flex flex-col items-center justify-center px-6 py-16">
 
-      {/* Logo card — white rounded box just like screenshot */}
+      {/* Logo card */}
       <div
         ref={cardRef}
-        className="bg-white rounded-2xl p-8 w-full max-w-lg aspect-square flex items-center justify-center shadow-2xl"
+        className="bg-white rounded-3xl p-6 w-full max-w-sm aspect-square flex items-center justify-center shadow-2xl"
       >
         <div className="relative w-full h-full">
           <Image
@@ -35,11 +33,11 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* Lets Go button */}
+      {/* Lets Go button — bigger */}
       <a
         ref={btnRef}
         href="#products"
-        className="mt-6 w-full max-w-lg flex items-center justify-center bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-bold py-5 rounded-2xl text-base uppercase tracking-widest transition-all duration-200 active:scale-95"
+        className="mt-5 w-full max-w-sm flex items-center justify-center bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-6 rounded-2xl text-lg uppercase tracking-[0.2em] transition-all duration-200 active:scale-95 shadow-lg"
       >
         Lets Go!
       </a>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import Image from 'next/image';
 import CartButton from '@/components/CartButton';
 import CartDrawer from '@/components/CartDrawer';
 import Sidebar from '@/components/Sidebar';
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Kandy Carnival | Premium Cannabis Los Angeles',
-  description: 'Premium cannabis products in Los Angeles. Flowers, edibles, vapes, concentrates and pre-rolls. Order via Telegram for fast discreet delivery.',
+  description: 'Premium cannabis products in Los Angeles. Flowers, edibles, vapes, concentrates and pre-rolls.',
   keywords: 'weed delivery LA, cannabis Los Angeles, edibles LA, THC vapes, kandy carnival',
   openGraph: {
     title: 'Kandy Carnival',
@@ -43,12 +44,20 @@ export default function RootLayout({
           <Sidebar />
 
           {/* Header */}
-          <header className="sticky top-0 z-40 bg-[#111111]/95 backdrop-blur border-b border-[#2a2a2a] px-6 py-4 flex items-center justify-between">
+          <header className="sticky top-0 z-40 bg-[#111111]/95 backdrop-blur border-b border-[#2a2a2a] px-6 py-3 flex items-center justify-between">
             <div className="w-10" />
 
-            {/* Center — WELCOME */}
-            <a href="/" className="text-sm font-black uppercase tracking-[0.3em] text-white">
-              Welcome
+            {/* Center — logo in white box */}
+            <a href="/" className="flex items-center justify-center">
+              <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
+                <Image
+                  src="/logo.jpg"
+                  alt="Kandy Carnival"
+                  fill
+                  className="object-contain p-0.5"
+                  priority
+                />
+              </div>
             </a>
 
             {/* Right: Cart */}
