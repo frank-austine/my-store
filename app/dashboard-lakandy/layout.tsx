@@ -40,37 +40,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#111111] text-white`}
         suppressHydrationWarning
       >
-        <AntiCopyWrapper>
-          <Sidebar />
-
-          {/* Header */}
-          <header className="sticky top-0 z-40 bg-[#111111]/95 backdrop-blur border-b border-[#2a2a2a] px-6 py-3 flex items-center justify-between">
-            <div className="w-10" />
-
-            {/* Center — logo in white box */}
-            <a href="/" className="flex items-center justify-center">
-              <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
-                <Image
-                  src="/logo.png"
-                  alt="Kandy Carnival"
-                  fill
-                  className="object-contain p-0.5"
-                  priority
-                />
-              </div>
-            </a>
-
-            {/* Right: Cart */}
-            <CartButton />
-          </header>
-
-          <main className="flex-1">
-            {children}
-          </main>
-
-          <CartDrawer />
-          <TelegramFloat />
-        </AntiCopyWrapper>
+        {children}
       </body>
     </html>
   );
