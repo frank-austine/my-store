@@ -24,7 +24,7 @@ export default function HeroBanner() {
       >
         <div className="relative w-full h-full">
           <Image
-            src="/logo.jpg"
+            src="/logo.png"
             alt="Kandy Carnival"
             fill
             className="object-contain"
@@ -33,7 +33,7 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* Lets Go button — bigger */}
+      {/* Lets Go button */}
       <a
         ref={btnRef}
         href="#products"
