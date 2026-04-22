@@ -10,7 +10,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[#111111] text-white">
 
       {/* Page content */}
-      <div className="px-6 pt-10 pb-32 max-w-lg mx-auto">
+      <div className="px-6 pt-10 pb-32 max-w-lg mx-auto text-center">
 
         {/* Heading */}
         <h1 className="text-3xl font-black mb-8">About Us</h1>
@@ -30,7 +30,7 @@ export default function AboutPage() {
 
           <div>
             <p className="text-white">Only Contact:</p>
-            <p className="text-[#8B7B2A]">
+            <p className="text-[#8B7B2A] mt-1">
               Telegram:{' '}
               <a
                 href="https://t.me/Los_angeles_weed_kandy_plug"
@@ -65,7 +65,7 @@ export default function AboutPage() {
       </div>
 
       {/* View Products button — fixed at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-gradient-to-t from-[#111111] via-[#111111]/90 to-transparent pt-8">
+      <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-linear-to-t from-[#111111] via-[#111111]/90 to-transparent pt-8">
         <a
           href="/#products"
           className="flex items-center justify-center w-full max-w-lg mx-auto bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-5 rounded-2xl text-base transition-all duration-200 active:scale-95"
