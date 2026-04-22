@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import CartButton from '@/components/CartButton';
 import CartDrawer from '@/components/CartDrawer';
 import Sidebar from '@/components/Sidebar';
@@ -18,7 +19,7 @@ export default function MainLayout({
       <header className="sticky top-0 z-40 bg-[#111111]/95 backdrop-blur border-b border-[#2a2a2a] px-6 py-3 flex items-center justify-between">
         <div className="w-10" />
 
-        <a href="/" className="flex items-center justify-center">
+        <Link href="/" className="flex items-center justify-center">
           <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
             <Image
               src="/logo.png"
@@ -28,7 +29,7 @@ export default function MainLayout({
               priority
             />
           </div>
-        </a>
+        </Link>
 
         <CartButton />
       </header>

@@ -25,7 +25,7 @@ export default function AdminVideosPage() {
       if (!data.session) router.push('/admin');
     });
     fetchVideos();
-  }, []);
+  }, [router]);
 
   async function fetchVideos() {
     const { data } = await supabase

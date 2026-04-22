@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/types/product';
-import { useCartStore } from '@/store/cartStore';
+
 import { animateOnScroll } from '@/app/lib/gsapAnimations';
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 
 export default function ProductCard({ product, videoUrl }: Props) {
   const router = useRouter();
-  const addToCart = useCartStore((state) => state.addToCart);
+
   const cardRef = useRef<HTMLDivElement>(null);
   const [favorited, setFavorited] = useState(false);
 
@@ -24,10 +24,7 @@ export default function ProductCard({ product, videoUrl }: Props) {
 
   const hasVideo = !!videoUrl;
 
-  function handleAddToCart(e: React.MouseEvent) {
-    e.stopPropagation();
-    addToCart(product);
-  }
+
 
   return (
     <div

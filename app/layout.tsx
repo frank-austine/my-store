@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Image from 'next/image';
+import Link from 'next/link';
 import CartButton from '@/components/CartButton';
 import CartDrawer from '@/components/CartDrawer';
 import Sidebar from '@/components/Sidebar';
@@ -48,7 +49,7 @@ export default function RootLayout({
             <div className="w-10" />
 
             {/* Center — logo in white box */}
-            <a href="/" className="flex items-center justify-center">
+            <Link href="/" className="flex items-center justify-center">
               <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
                 <Image
                   src="/logo.jpg"
@@ -58,7 +59,7 @@ export default function RootLayout({
                   priority
                 />
               </div>
-            </a>
+            </Link>
 
             {/* Right: Cart */}
             <CartButton />

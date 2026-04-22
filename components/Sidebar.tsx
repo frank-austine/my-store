@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export default function Sidebar() {
@@ -20,7 +21,7 @@ export default function Sidebar() {
       >
         <span className="block w-5 h-0.5 bg-[#8B7B2A] rounded" />
         <span className="block w-5 h-0.5 bg-[#8B7B2A] rounded" />
-        <span className="block w-3.5 h-0.5 bg-[#8B7B2A] rounded self-start ml-[5px]" />
+        <span className="block w-3.5 h-0.5 bg-[#8B7B2A] rounded self-start ml-1.25" />
       </button>
 
       {/* Backdrop */}
@@ -53,22 +54,22 @@ export default function Sidebar() {
 
         {/* Nav — only All Products and About Us */}
         <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
-          <a
+          <Link
             href="/#products"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B7B2A] shrink-0" />
             All Products
-          </a>
-          <a
+          </Link>
+          <Link
             href="/about"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B7B2A] shrink-0" />
             About Us
-          </a>
+          </Link>
         </nav>
 
         {/* Footer */}

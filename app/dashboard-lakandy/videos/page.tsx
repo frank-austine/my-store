@@ -25,7 +25,7 @@ export default function DashboardVideosPage() {
       if (!data.session) router.push('/dashboard-lakandy');
     });
     fetchVideos();
-  }, []);
+  }, [router]);
 
   async function fetchVideos() {
     const { data } = await supabase

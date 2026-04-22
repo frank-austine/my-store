@@ -30,7 +30,7 @@ export default function DashboardProductsPage() {
       if (!data.session) router.push('/dashboard-lakandy');
     });
     fetchProducts();
-  }, []);
+  }, [router]);
 
   async function fetchProducts() {
     const { data } = await supabase

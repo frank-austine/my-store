@@ -30,7 +30,7 @@ export default function AdminProductsPage() {
       if (!data.session) router.push('/admin');
     });
     fetchProducts();
-  }, []);
+  }, [router]);
 
   async function fetchProducts() {
     const { data } = await supabase
