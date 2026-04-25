@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin | LA Kandy Plug',
+  title: 'Admin | Kandy Carnival',
+  robots: { index: false, follow: false },
 };
 
 export default function AdminLayout({
@@ -10,7 +11,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#111111] text-white">
       {children}
     </div>
   );
