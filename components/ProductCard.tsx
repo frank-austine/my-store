@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/types/product';
-
+import { useCartStore } from '@/store/cartStore';
 import { animateOnScroll } from '@/app/lib/gsapAnimations';
 
 type Props = {
@@ -14,9 +14,10 @@ type Props = {
 
 export default function ProductCard({ product, videoUrl }: Props) {
   const router = useRouter();
-
+  const addToCart = useCartStore((state) => state.addToCart);
   const cardRef = useRef<HTMLDivElement>(null);
   const [favorited, setFavorited] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     if (cardRef.current) animateOnScroll(cardRef.current);
@@ -24,13 +25,22 @@ export default function ProductCard({ product, videoUrl }: Props) {
 
   const hasVideo = !!videoUrl;
 
+  function handleAddToCart(e: React.MouseEvent) {
+    e.stopPropagation();
+    addToCart(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  }
 
+  function goToDetail() {
+    router.push(`/products/${product.slug}`);
+  }
 
   return (
     <div
       ref={cardRef}
-      onClick={() => router.push(`/products/${product.slug}`)}
-      className="rounded-2xl overflow-hidden flex flex-col bg-[#1a1a1a] cursor-pointer group"
+      className="rounded-xl overflow-hidden flex flex-col bg-[#1a1a1a] cursor-pointer group"
+      onClick={goToDetail}
     >
       {/* Image area */}
       <div className="relative w-full aspect-square bg-[#111]">
@@ -48,14 +58,14 @@ export default function ProductCard({ product, videoUrl }: Props) {
           </div>
         )}
 
-        {/* Category badge — top left */}
+        {/* Category badge top left */}
         {product.category && (
           <span className="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-semibold px-2 py-1 rounded-md">
             {product.category}
           </span>
         )}
 
-        {/* Favorite — top right */}
+        {/* Favorite top right */}
         <button
           onClick={(e) => { e.stopPropagation(); setFavorited(!favorited); }}
           className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/40 flex items-center justify-center hover:bg-black/70 transition"
@@ -69,7 +79,7 @@ export default function ProductCard({ product, videoUrl }: Props) {
           </svg>
         </button>
 
-        {/* Play icon — bottom left (only if has video) */}
+        {/* Play icon bottom left */}
         {hasVideo && (
           <div className="absolute bottom-2 left-2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
@@ -79,7 +89,7 @@ export default function ProductCard({ product, videoUrl }: Props) {
         )}
       </div>
 
-      {/* Info bar below image */}
+      {/* Info below image */}
       <div className="px-3 py-3 flex flex-col gap-1">
         <h3 className="text-white font-bold text-sm leading-snug line-clamp-1">
           {product.name}
