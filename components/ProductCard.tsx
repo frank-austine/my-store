@@ -17,7 +17,6 @@ export default function ProductCard({ product, videoUrl }: Props) {
   const addToCart = useCartStore((state) => state.addToCart);
   const cardRef = useRef<HTMLDivElement>(null);
   const [favorited, setFavorited] = useState(false);
-  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     if (cardRef.current) animateOnScroll(cardRef.current);
@@ -25,22 +24,11 @@ export default function ProductCard({ product, videoUrl }: Props) {
 
   const hasVideo = !!videoUrl;
 
-  function handleAddToCart(e: React.MouseEvent) {
-    e.stopPropagation();
-    addToCart(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
-  }
-
-  function goToDetail() {
-    router.push(`/products/${product.slug}`);
-  }
-
   return (
     <div
       ref={cardRef}
-      className="rounded-xl overflow-hidden flex flex-col bg-[#1a1a1a] cursor-pointer group"
-      onClick={goToDetail}
+      onClick={() => router.push(`/products/${product.slug}`)}
+      className="rounded-lg overflow-hidden flex flex-col bg-[#1a1a1a] cursor-pointer group border border-[#2a2a2a] hover:border-[#8B7B2A]/40 transition-colors duration-300"
     >
       {/* Image area */}
       <div className="relative w-full aspect-square bg-[#111]">
@@ -60,7 +48,7 @@ export default function ProductCard({ product, videoUrl }: Props) {
 
         {/* Category badge top left */}
         {product.category && (
-          <span className="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-semibold px-2 py-1 rounded-md">
+          <span className="absolute top-2 left-2 bg-black/70 text-white text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wide">
             {product.category}
           </span>
         )}
@@ -68,7 +56,7 @@ export default function ProductCard({ product, videoUrl }: Props) {
         {/* Favorite top right */}
         <button
           onClick={(e) => { e.stopPropagation(); setFavorited(!favorited); }}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/40 flex items-center justify-center hover:bg-black/70 transition"
+          className="absolute top-2 right-2 w-8 h-8 rounded-sm bg-black/50 flex items-center justify-center hover:bg-black/80 transition"
         >
           <svg width="14" height="14" viewBox="0 0 24 24"
             fill={favorited ? '#e74c3c' : 'none'}
@@ -81,7 +69,7 @@ export default function ProductCard({ product, videoUrl }: Props) {
 
         {/* Play icon bottom left */}
         {hasVideo && (
-          <div className="absolute bottom-2 left-2 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
+          <div className="absolute bottom-2 left-2 w-8 h-8 rounded-sm bg-black/60 flex items-center justify-center">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
@@ -90,11 +78,11 @@ export default function ProductCard({ product, videoUrl }: Props) {
       </div>
 
       {/* Info below image */}
-      <div className="px-3 py-3 flex flex-col gap-1">
-        <h3 className="text-white font-bold text-sm leading-snug line-clamp-1">
+      <div className="px-3 py-3 flex flex-col gap-1.5">
+        <h3 className="text-white font-black text-base leading-snug line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-white font-black text-base">
+        <p className="text-[#8B7B2A] font-black text-lg">
           ${product.price_ship.toFixed(0)}
         </p>
       </div>

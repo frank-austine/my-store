@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export default function Sidebar() {
@@ -13,15 +12,15 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Hamburger button */}
+      {/* Hamburger button — square, more visible */}
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
-        className="fixed top-4 left-4 z-50 flex flex-col justify-center items-center gap-1.5 w-10 h-10 rounded-xl bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#8B7B2A]/50 transition"
+        className="fixed top-3 left-4 z-50 flex flex-col justify-center items-start gap-1.25 w-11 h-11 rounded-lg bg-[#1a1a1a] border border-[#8B7B2A]/40 hover:border-[#8B7B2A] hover:bg-[#222] transition px-3"
       >
-        <span className="block w-5 h-0.5 bg-[#8B7B2A] rounded" />
-        <span className="block w-5 h-0.5 bg-[#8B7B2A] rounded" />
-        <span className="block w-3.5 h-0.5 bg-[#8B7B2A] rounded self-start ml-1.25" />
+        <span className="block w-5 h-0.5 bg-[#8B7B2A]" />
+        <span className="block w-5 h-0.5 bg-[#8B7B2A]" />
+        <span className="block w-3 h-0.5 bg-[#8B7B2A]" />
       </button>
 
       {/* Backdrop */}
@@ -46,30 +45,30 @@ export default function Sidebar() {
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-gray-600 hover:text-white transition text-lg leading-none"
+            className="w-8 h-8 rounded-lg bg-[#2a2a2a] hover:bg-[#333] flex items-center justify-center text-gray-400 hover:text-white transition text-sm"
           >
             ✕
           </button>
         </div>
 
-        {/* Nav — only All Products and About Us */}
+        {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
-          <Link
+          <a
             href="/#products"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
+            className="flex items-center gap-3 px-4 py-4 rounded-lg text-gray-300 hover:bg-[#1f1f1f] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7B2A] shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-sm bg-[#8B7B2A] shrink-0" />
             All Products
-          </Link>
-          <Link
+          </a>
+          <a
             href="/about"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
+            className="flex items-center gap-3 px-4 py-4 rounded-lg text-gray-300 hover:bg-[#1f1f1f] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8B7B2A] shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-sm bg-[#8B7B2A] shrink-0" />
             About Us
-          </Link>
+          </a>
         </nav>
 
         {/* Footer */}
@@ -79,7 +78,7 @@ export default function Sidebar() {
               setIsOpen(false);
               window.open('https://t.me/Los_angeles_weed_kandy_plug', '_blank');
             }}
-            className="w-full bg-[#8B7B2A] hover:bg-[#a08f30] text-white py-3 rounded-xl font-black transition text-sm uppercase tracking-widest"
+            className="w-full bg-[#8B7B2A] hover:bg-[#a08f30] text-white py-3 rounded-lg font-black transition text-sm uppercase tracking-widest"
           >
             Order via Telegram
           </button>
