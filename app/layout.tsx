@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Image from 'next/image';
-import Link from 'next/link';
 import CartButton from '@/components/CartButton';
 import CartDrawer from '@/components/CartDrawer';
 import Sidebar from '@/components/Sidebar';
 import AntiCopyWrapper from '@/components/AntiCopyWrapper';
 import TelegramFloat from '@/components/TelegramFloat';
+import HeaderTitle from '@/components/HeaderTitle';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -44,24 +44,13 @@ export default function RootLayout({
         <AntiCopyWrapper>
           <Sidebar />
 
-          {/* Header */}
+          {/* Single header for entire app */}
           <header className="sticky top-0 z-40 bg-[#111111]/95 backdrop-blur border-b border-[#2a2a2a] px-6 py-3 flex items-center justify-between">
             <div className="w-10" />
 
-            {/* Center — logo in white box */}
-            <Link href="/" className="flex items-center justify-center">
-              <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
-                <Image
-                  src="/logo.jpg"
-                  alt="Kandy Carnival"
-                  fill
-                  className="object-contain p-0.5"
-                  priority
-                />
-              </div>
-            </Link>
+            {/* Dynamic center — shows logo on home, page title elsewhere */}
+            <HeaderTitle />
 
-            {/* Right: Cart */}
             <CartButton />
           </header>
 
