@@ -3,6 +3,10 @@ import { Product } from '@/types/product';
 import { notFound } from 'next/navigation';
 import ProductDetailClient from '@/components/ProductDetailClient';
 
+// Force dynamic rendering — never cache product pages
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
