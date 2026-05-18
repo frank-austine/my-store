@@ -66,7 +66,7 @@ export default function AboutPage() {
       </div>
 
       {/* View Products button — fixed at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-gradient-to-t from-[#111111] via-[#111111]/90 to-transparent pt-8">
+      <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-linear-to-t from-[#111111] via-[#111111]/90 to-transparent pt-8">
         <Link
           href="/#products"
           className="flex items-center justify-center w-full max-w-lg mx-auto bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-5 rounded-2xl text-base transition-all duration-200 active:scale-95"

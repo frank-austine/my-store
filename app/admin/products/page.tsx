@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabaseClient';
 import { Product } from '@/types/product';
+import imageCompression from 'browser-image-compression';
 
 const EMPTY_FORM = {
   name: '',
@@ -60,10 +61,20 @@ export default function AdminProductsPage() {
     else setVideoPreview(null);
   }
 
-  async function uploadFile(file: File, bucket: string, baseName: string, ext: string): Promise<string | null> {
+  async function uploadFile(
+    file: File,
+    bucket: string,
+    baseName: string,
+    ext: string
+  ): Promise<string | null> {
     const fileName = `${baseName}.${ext}`;
-    const { error } = await supabase.storage.from(bucket).upload(fileName, file, { upsert: true });
-    if (error) { setMessage(`Upload failed: ${error.message}`); return null; }
+    const { error } = await supabase.storage
+      .from(bucket)
+      .upload(fileName, file, { upsert: true });
+    if (error) {
+      setMessage(`Upload failed (${bucket}): ${error.message}`);
+      return null;
+    }
     const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
     return data.publicUrl;
   }
@@ -76,26 +87,46 @@ export default function AdminProductsPage() {
     setUploading(true);
     setMessage('');
 
-    const baseName = `${Date.now()}-${form.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+    const baseName = `${Date.now()}-${form.name
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')}`;
+
     let image_url = editingImageUrl;
     let video_url = editingVideoUrl;
 
+    // Compress and upload image
     if (imageFile) {
+      setUploadProgress('Compressing image...');
+      let fileToUpload = imageFile;
+      try {
+        fileToUpload = await imageCompression(imageFile, {
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+          onProgress: (p) => setUploadProgress(`Compressing image... ${p}%`),
+        });
+      } catch {
+        // if compression fails just use original
+      }
       setUploadProgress('Uploading image...');
       const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      image_url = await uploadFile(imageFile, 'product-images', baseName, ext);
+      image_url = await uploadFile(fileToUpload, 'product-image', baseName, ext);
       if (!image_url) { setUploading(false); setUploadProgress(''); return; }
     }
 
+    // Upload video
     if (videoFile) {
-      setUploadProgress('Uploading video... (this may take a moment)');
+      setUploadProgress('Uploading video... (large files take longer)');
       const ext = videoFile.name.split('.').pop() ?? 'mp4';
-      video_url = await uploadFile(videoFile, 'product-videos', baseName, ext);
+      video_url = await uploadFile(videoFile, 'product-video', baseName, ext);
       if (!video_url) { setUploading(false); setUploadProgress(''); return; }
     }
 
     setUploadProgress('Saving product...');
-    const slug = form.slug || form.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+    const slug = form.slug ||
+      form.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
     const payload = {
       name: form.name,
@@ -188,42 +219,56 @@ export default function AdminProductsPage() {
           {editingId ? 'Edit Product' : 'Add New Product'}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
           <div className="sm:col-span-2">
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Product Name *</label>
-            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Sugar Baby Smalls"
+            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="e.g. Sugar Baby Smalls"
               className="w-full bg-[#111] border border-[#2a2a2a] focus:border-[#8B7B2A]/60 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition" />
           </div>
+
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Category</label>
-            <input type="text" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} placeholder="e.g. Indoor Smalls"
+            <input type="text" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
+              placeholder="e.g. Indoor Smalls"
               className="w-full bg-[#111] border border-[#2a2a2a] focus:border-[#8B7B2A]/60 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition" />
           </div>
+
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Slug (auto if empty)</label>
-            <input type="text" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="sugar-baby-smalls"
+            <input type="text" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })}
+              placeholder="sugar-baby-smalls"
               className="w-full bg-[#111] border border-[#2a2a2a] focus:border-[#8B7B2A]/60 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition" />
           </div>
+
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Ship Price * ($)</label>
-            <input type="number" value={form.price_ship} onChange={(e) => setForm({ ...form, price_ship: e.target.value })} placeholder="200"
+            <input type="number" value={form.price_ship} onChange={(e) => setForm({ ...form, price_ship: e.target.value })}
+              placeholder="200"
               className="w-full bg-[#111] border border-[#2a2a2a] focus:border-[#8B7B2A]/60 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition" />
           </div>
+
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Local Price * ($)</label>
-            <input type="number" value={form.price_local} onChange={(e) => setForm({ ...form, price_local: e.target.value })} placeholder="100"
+            <input type="number" value={form.price_local} onChange={(e) => setForm({ ...form, price_local: e.target.value })}
+              placeholder="100"
               className="w-full bg-[#111] border border-[#2a2a2a] focus:border-[#8B7B2A]/60 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition" />
           </div>
+
           <div className="sm:col-span-2">
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Description (optional)</label>
-            <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Short product description..." rows={3}
+            <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
+              placeholder="Short product description..." rows={2}
               className="w-full bg-[#111] border border-[#2a2a2a] focus:border-[#8B7B2A]/60 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition resize-none" />
           </div>
 
           {/* Image upload */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Product Image</label>
-            <div className="border border-dashed border-[#3a3a3a] hover:border-[#8B7B2A]/60 rounded-xl p-5 bg-[#111] transition">
-              <div className="flex items-center gap-4">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+              Product Image <span className="text-gray-600 normal-case font-normal">(auto-compressed for fast upload)</span>
+            </label>
+            <div className="border border-dashed border-[#3a3a3a] hover:border-[#8B7B2A]/60 rounded-xl p-4 bg-[#111] transition">
+              <div className="flex items-center gap-4 flex-wrap">
                 <label className="cursor-pointer flex items-center gap-2 bg-[#8B7B2A] hover:bg-[#a08f30] text-white text-xs font-black uppercase tracking-widest px-5 py-3 rounded-xl transition">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
@@ -231,14 +276,14 @@ export default function AdminProductsPage() {
                   Choose Image
                   <input ref={imageRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                 </label>
-                <span className="text-xs text-gray-600">{imageFile ? imageFile.name : 'JPG, PNG, WEBP'}</span>
+                <span className="text-xs text-gray-500">{imageFile ? `${imageFile.name} (${(imageFile.size / 1024 / 1024).toFixed(1)}MB)` : 'JPG, PNG, WEBP'}</span>
               </div>
               {imagePreview && (
-                <div className="mt-4 relative w-32 h-32 rounded-xl overflow-hidden border border-[#2a2a2a]">
+                <div className="mt-3 relative w-28 h-28 rounded-xl overflow-hidden border border-[#2a2a2a]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                   <button onClick={() => { setImageFile(null); setImagePreview(null); if (imageRef.current) imageRef.current.value = ''; }}
-                    className="absolute top-1 right-1 w-6 h-6 bg-black/80 rounded-full flex items-center justify-center text-white text-xs hover:bg-red-600 transition">✕</button>
+                    className="absolute top-1 right-1 w-5 h-5 bg-black/80 rounded-full flex items-center justify-center text-white text-[10px] hover:bg-red-600 transition">✕</button>
                 </div>
               )}
             </div>
@@ -246,9 +291,11 @@ export default function AdminProductsPage() {
 
           {/* Video upload */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Product Video (MP4)</label>
-            <div className="border border-dashed border-[#3a3a3a] hover:border-[#8B7B2A]/60 rounded-xl p-5 bg-[#111] transition">
-              <div className="flex items-center gap-4">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+              Product Video (MP4) <span className="text-gray-600 normal-case font-normal">(optional)</span>
+            </label>
+            <div className="border border-dashed border-[#3a3a3a] hover:border-[#8B7B2A]/60 rounded-xl p-4 bg-[#111] transition">
+              <div className="flex items-center gap-4 flex-wrap">
                 <label className="cursor-pointer flex items-center gap-2 bg-[#8B7B2A] hover:bg-[#a08f30] text-white text-xs font-black uppercase tracking-widest px-5 py-3 rounded-xl transition">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
@@ -256,45 +303,58 @@ export default function AdminProductsPage() {
                   Choose Video
                   <input ref={videoRef} type="file" accept="video/mp4,video/*" onChange={handleVideoChange} className="hidden" />
                 </label>
-                <span className="text-xs text-gray-600">{videoFile ? videoFile.name : 'MP4 recommended'}</span>
+                <span className="text-xs text-gray-500">{videoFile ? `${videoFile.name} (${(videoFile.size / 1024 / 1024).toFixed(1)}MB)` : 'MP4 recommended · keep under 50MB for fast upload'}</span>
               </div>
-              <p className="text-[11px] text-gray-600 mt-2">Large files may take a moment — do not close the page</p>
               {videoPreview && (
-                <div className="mt-4 relative w-full max-w-xs rounded-xl overflow-hidden border border-[#2a2a2a]">
+                <div className="mt-3 relative w-full max-w-70 rounded-xl overflow-hidden border border-[#2a2a2a]">
                   <video src={videoPreview} controls className="w-full aspect-video" />
                   <button onClick={() => { setVideoFile(null); setVideoPreview(null); if (videoRef.current) videoRef.current.value = ''; }}
-                    className="absolute top-1 right-1 w-6 h-6 bg-black/80 rounded-full flex items-center justify-center text-white text-xs hover:bg-red-600 transition">✕</button>
+                    className="absolute top-1 right-1 w-5 h-5 bg-black/80 rounded-full flex items-center justify-center text-white text-[10px] hover:bg-red-600 transition">✕</button>
                 </div>
               )}
             </div>
           </div>
+
         </div>
 
+        {/* Progress bar */}
         {uploadProgress && (
-          <div className="mt-5 flex items-center gap-3 bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3">
-            <div className="w-4 h-4 border-2 border-[#8B7B2A] border-t-transparent rounded-full animate-spin shrink-0" />
-            <p className="text-sm text-[#8B7B2A] font-bold">{uploadProgress}</p>
+          <div className="mt-5 space-y-2">
+            <div className="flex items-center gap-3 bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3">
+              <div className="w-4 h-4 border-2 border-[#8B7B2A] border-t-transparent rounded-full animate-spin shrink-0" />
+              <p className="text-sm text-[#8B7B2A] font-bold">{uploadProgress}</p>
+            </div>
           </div>
         )}
+
         {message && !uploadProgress && (
-          <p className={`mt-4 text-sm font-bold ${message.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>{message}</p>
+          <p className={`mt-4 text-sm font-bold ${message.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>
+            {message}
+          </p>
         )}
 
-        <div className="flex gap-3 mt-6">
+        <div className="flex gap-3 mt-5">
           <button onClick={handleSubmit} disabled={uploading}
-            className="bg-[#8B7B2A] hover:bg-[#a08f30] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest transition disabled:opacity-40">
+            className="bg-[#8B7B2A] hover:bg-[#a08f30] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest transition disabled:opacity-40 disabled:cursor-not-allowed">
             {uploading ? 'Saving...' : editingId ? 'Update Product' : 'Add Product'}
           </button>
           {editingId && (
-            <button onClick={handleCancel} className="px-6 py-3 rounded-xl text-sm border border-[#2a2a2a] text-gray-400 hover:text-white transition">Cancel</button>
+            <button onClick={handleCancel}
+              className="px-6 py-3 rounded-xl text-sm border border-[#2a2a2a] text-gray-400 hover:text-white transition">
+              Cancel
+            </button>
           )}
         </div>
       </div>
 
       {/* Products list */}
       <div className="space-y-3">
-        <p className="text-xs font-black uppercase tracking-widest text-gray-600 mb-4">{products.length} Product{products.length !== 1 ? 's' : ''}</p>
-        {products.length === 0 && <p className="text-center text-gray-600 py-8 text-sm">No products yet.</p>}
+        <p className="text-xs font-black uppercase tracking-widest text-gray-600 mb-4">
+          {products.length} Product{products.length !== 1 ? 's' : ''}
+        </p>
+        {products.length === 0 && (
+          <p className="text-center text-gray-600 py-8 text-sm">No products yet.</p>
+        )}
         {products.map((product) => (
           <div key={product.id} className="bg-[#1a1a1a] rounded-2xl border border-[#2a2a2a] px-4 py-4 flex items-center gap-4">
             <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#111] shrink-0 border border-[#2a2a2a]">
@@ -305,7 +365,9 @@ export default function AdminProductsPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-sm text-white truncate">{product.name}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{product.category ?? 'No category'} · 🚢 ${product.price_ship} · 📍 ${product.price_local}</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {product.category ?? 'No category'} · 🚢 ${product.price_ship} · 📍 ${product.price_local}
+              </p>
               <div className="flex gap-2 mt-1">
                 {product.image_url && <span className="text-[10px] text-[#8B7B2A] font-bold">🖼 Image</span>}
                 {product.video_url && <span className="text-[10px] text-[#8B7B2A] font-bold">🎥 Video</span>}
@@ -313,11 +375,19 @@ export default function AdminProductsPage() {
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <button onClick={() => toggleActive(product)}
-                className={`text-[11px] px-3 py-1.5 rounded-lg font-bold uppercase tracking-wide transition ${product.is_active ? 'bg-green-500/10 text-green-400' : 'bg-[#2a2a2a] text-gray-500'}`}>
+                className={`text-[11px] px-3 py-1.5 rounded-lg font-bold uppercase tracking-wide transition ${
+                  product.is_active ? 'bg-green-500/10 text-green-400' : 'bg-[#2a2a2a] text-gray-500'
+                }`}>
                 {product.is_active ? 'Live' : 'Hidden'}
               </button>
-              <button onClick={() => handleEdit(product)} className="text-[11px] px-3 py-1.5 rounded-lg border border-[#2a2a2a] text-gray-400 hover:text-white transition">Edit</button>
-              <button onClick={() => handleDelete(product.id)} className="text-[11px] px-3 py-1.5 rounded-lg text-red-500/60 hover:text-red-400 hover:bg-red-500/10 transition">Delete</button>
+              <button onClick={() => handleEdit(product)}
+                className="text-[11px] px-3 py-1.5 rounded-lg border border-[#2a2a2a] text-gray-400 hover:text-white transition">
+                Edit
+              </button>
+              <button onClick={() => handleDelete(product.id)}
+                className="text-[11px] px-3 py-1.5 rounded-lg text-red-500/60 hover:text-red-400 hover:bg-red-500/10 transition">
+                Delete
+              </button>
             </div>
           </div>
         ))}
