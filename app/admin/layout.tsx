@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin | Kandy Carnival',
+  title: 'Admin | kandy distro',
   robots: { index: false, follow: false },
 };
 

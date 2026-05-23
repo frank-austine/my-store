@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-black uppercase tracking-tight text-white">Kandy Carnival</h1>
+          <h1 className="text-2xl font-black uppercase tracking-tight text-white">kandy distro</h1>
           <p className="text-xs text-gray-500 tracking-widest uppercase mt-1">Admin Panel</p>
         </div>
 

@@ -35,7 +35,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 className="hover:text-white transition"
               >
-                @Los_angeles_weed_kandy_plug
+                @los_angeles_weed_kandydistro
               </a>
             </p>
           </div>

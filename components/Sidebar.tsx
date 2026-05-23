@@ -84,7 +84,7 @@ export default function Sidebar() {
             Order via Telegram
           </button>
           <p className="text-[10px] text-gray-600 text-center mt-3 tracking-wide">
-            @Los_angeles_weed_kandy_plug
+            @los_angeles_weed_kandydistro
           </p>
         </div>
       </div>
