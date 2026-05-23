@@ -2,21 +2,17 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'About | Kandy Carnival',
-  description: 'Learn about Kandy Carnival — premium cannabis products in Los Angeles.',
+  title: 'About | Kandy Distro',
+  description: 'Learn about Kandy Distro — premium cannabis products in Los Angeles.',
 };
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#111111] text-white">
-
-      {/* Page content */}
       <div className="px-6 pt-10 pb-32 max-w-lg mx-auto text-center">
 
-        {/* Heading */}
         <h1 className="text-3xl font-black mb-8">About Us</h1>
 
-        {/* Blocks */}
         <div className="space-y-6 text-sm font-bold uppercase tracking-wide leading-relaxed">
 
           <div>
@@ -52,7 +48,7 @@ export default function AboutPage() {
 
           <div>
             <p className="text-white">DM For Info</p>
-            <p className="text-white">DM For Pricing & Deals</p>
+            <p className="text-white">DM For Pricing &amp; Deals</p>
           </div>
 
           <div>
@@ -65,16 +61,15 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* View Products button — fixed at bottom */}
+      {/* View Products button fixed at bottom */}
       <div className="fixed bottom-0 left-0 right-0 px-6 pb-6 bg-linear-to-t from-[#111111] via-[#111111]/90 to-transparent pt-8">
         <Link
           href="/#products"
-          className="flex items-center justify-center w-full max-w-lg mx-auto bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-5 rounded-2xl text-base transition-all duration-200 active:scale-95"
+          className="flex items-center justify-center w-full max-w-lg mx-auto bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-5 rounded-lg text-base transition-all duration-200 active:scale-95 uppercase tracking-widest"
         >
           View Products
         </Link>
       </div>
-
     </div>
   );
 }

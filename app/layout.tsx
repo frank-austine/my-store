@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import Image from 'next/image';
 import CartButton from '@/components/CartButton';
 import CartDrawer from '@/components/CartDrawer';
 import Sidebar from '@/components/Sidebar';
@@ -20,13 +19,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Kandy Carnival | Premium Cannabis Los Angeles',
-  description: 'Premium cannabis products in Los Angeles. Flowers, edibles, vapes, concentrates and pre-rolls.',
-  keywords: 'weed delivery LA, cannabis Los Angeles, edibles LA, THC vapes, kandy carnival',
+  title: 'Kandy Distro | Premium Cannabis Los Angeles',
+  description: 'Premium cannabis products in Los Angeles. Flowers, edibles, vapes, concentrates and pre-rolls. Order via Telegram for fast discreet delivery.',
+  keywords: 'weed delivery LA, cannabis Los Angeles, Kandy Distro, edibles LA, THC vapes, buy weed online LA',
   openGraph: {
-    title: 'Kandy Carnival',
+    title: 'Kandy Distro',
     description: 'Premium cannabis products in Los Angeles.',
     type: 'website',
+    url: 'https://kandydistro.store',
   },
 };
 
@@ -44,13 +44,9 @@ export default function RootLayout({
         <AntiCopyWrapper>
           <Sidebar />
 
-          {/* Single header for entire app */}
           <header className="sticky top-0 z-40 bg-[#111111]/95 backdrop-blur border-b border-[#2a2a2a] px-6 py-3 flex items-center justify-between">
             <div className="w-10" />
-
-            {/* Dynamic center — shows logo on home, page title elsewhere */}
             <HeaderTitle />
-
             <CartButton />
           </header>
 

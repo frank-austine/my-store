@@ -1,15 +1,17 @@
 import { MetadataRoute } from 'next';
 
+const BASE_URL = 'https://kandydistro.store';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://https://my-store-sable-alpha.vercel.app/',
+      url: `${BASE_URL}`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: 'https://https://my-store-sable-alpha.vercel.app/about',
+      url: `${BASE_URL}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,

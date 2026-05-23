@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Hamburger button — square, more visible */}
+      {/* Hamburger button */}
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
@@ -40,7 +41,7 @@ export default function Sidebar() {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[#2a2a2a]">
           <div className="flex flex-col leading-none">
-            <span className="text-base font-black tracking-tight uppercase text-white">Kandy Carnival</span>
+            <span className="text-base font-black tracking-tight uppercase text-white">Kandy Distro</span>
             <span className="text-[9px] tracking-[0.3em] text-[#8B7B2A] uppercase mt-0.5">Los Angeles</span>
           </div>
           <button
@@ -53,22 +54,22 @@ export default function Sidebar() {
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
-          <a
+          <Link
             href="/#products"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 px-4 py-4 rounded-lg text-gray-300 hover:bg-[#1f1f1f] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
           >
             <span className="w-1.5 h-1.5 rounded-sm bg-[#8B7B2A] shrink-0" />
             All Products
-          </a>
-          <a
+          </Link>
+          <Link
             href="/about"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 px-4 py-4 rounded-lg text-gray-300 hover:bg-[#1f1f1f] hover:text-white font-bold transition border border-transparent hover:border-[#2a2a2a] uppercase tracking-widest text-sm"
           >
             <span className="w-1.5 h-1.5 rounded-sm bg-[#8B7B2A] shrink-0" />
             About Us
-          </a>
+          </Link>
         </nav>
 
         {/* Footer */}

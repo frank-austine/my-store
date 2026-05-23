@@ -20,12 +20,12 @@ export default function HeroBanner() {
       {/* Logo card */}
       <div
         ref={cardRef}
-        className="bg-white rounded-3xl p-6 w-full max-w-sm aspect-square flex items-center justify-center shadow-2xl"
+        className="bg-white rounded-lg p-6 w-full max-w-sm aspect-square flex items-center justify-center shadow-2xl"
       >
         <div className="relative w-full h-full">
           <Image
             src="/logo.png"
-            alt="Kandy Carnival"
+            alt="Kandy Distro"
             fill
             className="object-contain"
             priority
@@ -37,7 +37,7 @@ export default function HeroBanner() {
       <a
         ref={btnRef}
         href="#products"
-        className="mt-5 w-full max-w-sm flex items-center justify-center bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-6 rounded-2xl text-lg uppercase tracking-[0.2em] transition-all duration-200 active:scale-95 shadow-lg"
+        className="mt-5 w-full max-w-sm flex items-center justify-center bg-[#8B7B2A] hover:bg-[#a08f30] text-white font-black py-6 rounded-lg text-lg uppercase tracking-[0.2em] transition-all duration-200 active:scale-95 shadow-lg"
       >
         Lets Go!
       </a>
