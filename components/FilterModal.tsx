@@ -9,10 +9,8 @@ const CATEGORIES = [
   'Indoor Mediums',
   'Licensed Exotic',
   'Licensed Indoor',
-  'Edibles',
-  'Vapes',
   'Concentrates',
-  'Pre-Rolls',
+
 ];
 
 type Props = {

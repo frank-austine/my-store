@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import { animateCartOpen } from '@/app/lib/gsapAnimations';
 
-const TELEGRAM_CHAT_URL = 'https://t.me/Los_angeles_weed_kandy_plug';
+const TELEGRAM_CHAT_URL = 'https://t.me/Kandydistro';
 
 export default function CartDrawer() {
   const { items, isOpen, removeFromCart, updateQuantity, clearCart, toggleCart } = useCartStore();

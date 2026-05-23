@@ -13,7 +13,7 @@ export default function TelegramFloat() {
 
   return (
     <a
-      href="https://t.me/Los_angeles_weed_kandy_plug"
+      href="https://t.me/Kandydistro"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Order via Telegram"

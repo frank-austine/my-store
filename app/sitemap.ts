@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://kandydistro.store';
+const BASE_URL = 'https://Kandydistro.store';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

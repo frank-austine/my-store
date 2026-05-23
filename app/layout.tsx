@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: 'Kandy Distro',
     description: 'Premium cannabis products in Los Angeles.',
     type: 'website',
-    url: 'https://kandydistro.store',
+    url: 'https://Kandydistro.store',
   },
 };
 

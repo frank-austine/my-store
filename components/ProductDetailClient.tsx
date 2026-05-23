@@ -32,7 +32,7 @@ export default function ProductDetailClient({ product }: Props) {
     const message = encodeURIComponent(
       `Hi! I want to order:\n\n*${product.name}*\nShip: $${product.price_ship}\nLocal: $${product.price_local}`
     );
-    window.open(`https://t.me/Los_angeles_weed_kandy_plug?text=${message}`, '_blank');
+    window.open(`https://t.me/Kandydistro?text=${message}`, '_blank');
   }
 
   return (
@@ -204,7 +204,7 @@ export default function ProductDetailClient({ product }: Props) {
         {/* Bottom contact buttons — square style */}
         <div className="px-4 pt-4 pb-10 grid grid-cols-2 gap-3">
           <a
-            href="https://t.me/Los_angeles_weed_kandy_plug"
+            href="https://t.me/Kandydistro"
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center justify-center gap-2 bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#8B7B2A]/40 rounded-lg py-6 transition"
@@ -217,7 +217,7 @@ export default function ProductDetailClient({ product }: Props) {
           </a>
 
           <a
-            href="https://t.me/Los_angeles_weed_kandy_plug"
+            href="https://t.me/Kandydistro"
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center justify-center gap-2 bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#8B7B2A]/40 rounded-lg py-6 transition"

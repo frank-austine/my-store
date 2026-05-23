@@ -77,14 +77,14 @@ export default function Sidebar() {
           <button
             onClick={() => {
               setIsOpen(false);
-              window.open('https://t.me/Los_angeles_weed_kandy_plug', '_blank');
+              window.open('https://t.me/Kandydistro', '_blank');
             }}
             className="w-full bg-[#8B7B2A] hover:bg-[#a08f30] text-white py-3 rounded-lg font-black transition text-sm uppercase tracking-widest"
           >
             Order via Telegram
           </button>
           <p className="text-[10px] text-gray-600 text-center mt-3 tracking-wide">
-            @los_angeles_weed_kandydistro
+            @Kandydistro
           </p>
         </div>
       </div>

@@ -30,12 +30,12 @@ export default function AboutPage() {
             <p className="text-[#8B7B2A] mt-1">
               Telegram:{' '}
               <a
-                href="https://t.me/Los_angeles_weed_kandy_plug"
+                href="https://t.me/Kandydistro"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition"
               >
-                @los_angeles_weed_kandydistro
+                @Kandydistro
               </a>
             </p>
           </div>
