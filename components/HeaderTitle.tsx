@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HeaderTitle() {
   const pathname = usePathname();
@@ -23,16 +24,16 @@ export default function HeaderTitle() {
   }
 
   return (
-    <a href="/" className="flex items-center justify-center">
+    <Link href="/" className="flex items-center justify-center">
       <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
         <Image
-          src="/logo.png"
+          src="/logo.jpg"
           alt="Kandy Distro"
           fill
           className="object-contain p-0.5"
           priority
         />
       </div>
-    </a>
+    </Link>
   );
 }

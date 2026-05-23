@@ -24,7 +24,7 @@ export default function HeroBanner() {
       >
         <div className="relative w-full h-full">
           <Image
-            src="/logo.png"
+            src="/logo.jpg"
             alt="Kandy Distro"
             fill
             className="object-contain"
