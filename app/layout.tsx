@@ -7,6 +7,7 @@ import Sidebar from '@/components/Sidebar';
 import AntiCopyWrapper from '@/components/AntiCopyWrapper';
 import TelegramFloat from '@/components/TelegramFloat';
 import HeaderTitle from '@/components/HeaderTitle';
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -57,6 +58,7 @@ export default function RootLayout({
           <CartDrawer />
           <TelegramFloat />
         </AntiCopyWrapper>
+        <Analytics />
       </body>
     </html>
   );
