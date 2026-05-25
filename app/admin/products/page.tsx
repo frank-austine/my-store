@@ -15,6 +15,10 @@ const EMPTY_FORM = {
   category: '',
 };
 
+// ── EXACT bucket names from Supabase Storage ──
+const IMAGE_BUCKET = 'product-images';
+const VIDEO_BUCKET = 'product-videos';
+
 export default function AdminProductsPage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
@@ -72,7 +76,7 @@ export default function AdminProductsPage() {
       .from(bucket)
       .upload(fileName, file, { upsert: true });
     if (error) {
-      setMessage(`Upload failed (${bucket}): ${error.message}`);
+      setMessage(`Upload failed — bucket "${bucket}": ${error.message}`);
       return null;
     }
     const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
@@ -107,11 +111,11 @@ export default function AdminProductsPage() {
           onProgress: (p) => setUploadProgress(`Compressing image... ${p}%`),
         });
       } catch {
-        // if compression fails just use original
+        // compression failed — use original
       }
       setUploadProgress('Uploading image...');
       const ext = imageFile.name.split('.').pop() ?? 'jpg';
-      image_url = await uploadFile(fileToUpload, 'product-image', baseName, ext);
+      image_url = await uploadFile(fileToUpload, IMAGE_BUCKET, baseName, ext);
       if (!image_url) { setUploading(false); setUploadProgress(''); return; }
     }
 
@@ -119,7 +123,7 @@ export default function AdminProductsPage() {
     if (videoFile) {
       setUploadProgress('Uploading video... (large files take longer)');
       const ext = videoFile.name.split('.').pop() ?? 'mp4';
-      video_url = await uploadFile(videoFile, 'product-video', baseName, ext);
+      video_url = await uploadFile(videoFile, VIDEO_BUCKET, baseName, ext);
       if (!video_url) { setUploading(false); setUploadProgress(''); return; }
     }
 
@@ -218,6 +222,7 @@ export default function AdminProductsPage() {
         <h2 className="font-black text-lg mb-6 text-white uppercase tracking-wide">
           {editingId ? 'Edit Product' : 'Add New Product'}
         </h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
           <div className="sm:col-span-2">
@@ -276,7 +281,9 @@ export default function AdminProductsPage() {
                   Choose Image
                   <input ref={imageRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                 </label>
-                <span className="text-xs text-gray-500">{imageFile ? `${imageFile.name} (${(imageFile.size / 1024 / 1024).toFixed(1)}MB)` : 'JPG, PNG, WEBP'}</span>
+                <span className="text-xs text-gray-500">
+                  {imageFile ? `${imageFile.name} (${(imageFile.size / 1024 / 1024).toFixed(1)}MB)` : 'JPG, PNG, WEBP'}
+                </span>
               </div>
               {imagePreview && (
                 <div className="mt-3 relative w-28 h-28 rounded-xl overflow-hidden border border-[#2a2a2a]">
@@ -303,8 +310,11 @@ export default function AdminProductsPage() {
                   Choose Video
                   <input ref={videoRef} type="file" accept="video/mp4,video/*" onChange={handleVideoChange} className="hidden" />
                 </label>
-                <span className="text-xs text-gray-500">{videoFile ? `${videoFile.name} (${(videoFile.size / 1024 / 1024).toFixed(1)}MB)` : 'MP4 recommended · keep under 50MB for fast upload'}</span>
+                <span className="text-xs text-gray-500">
+                  {videoFile ? `${videoFile.name} (${(videoFile.size / 1024 / 1024).toFixed(1)}MB)` : 'MP4 recommended · keep under 50MB for fast upload'}
+                </span>
               </div>
+              <p className="text-[11px] text-gray-600 mt-2">Do not close the page while uploading</p>
               {videoPreview && (
                 <div className="mt-3 relative w-full max-w-70 rounded-xl overflow-hidden border border-[#2a2a2a]">
                   <video src={videoPreview} controls className="w-full aspect-video" />
@@ -317,18 +327,15 @@ export default function AdminProductsPage() {
 
         </div>
 
-        {/* Progress bar */}
         {uploadProgress && (
-          <div className="mt-5 space-y-2">
-            <div className="flex items-center gap-3 bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3">
-              <div className="w-4 h-4 border-2 border-[#8B7B2A] border-t-transparent rounded-full animate-spin shrink-0" />
-              <p className="text-sm text-[#8B7B2A] font-bold">{uploadProgress}</p>
-            </div>
+          <div className="mt-5 flex items-center gap-3 bg-[#111] border border-[#2a2a2a] rounded-xl px-4 py-3">
+            <div className="w-4 h-4 border-2 border-[#8B7B2A] border-t-transparent rounded-full animate-spin shrink-0" />
+            <p className="text-sm text-[#8B7B2A] font-bold">{uploadProgress}</p>
           </div>
         )}
 
         {message && !uploadProgress && (
-          <p className={`mt-4 text-sm font-bold ${message.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>
+          <p className={`mt-4 text-sm font-bold ${message.includes('failed') || message.includes('Failed') ? 'text-red-400' : 'text-green-400'}`}>
             {message}
           </p>
         )}
